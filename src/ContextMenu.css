@@ -1,0 +1,78 @@
+.react-context-menu {
+  border: 1px solid #e0e0e0;
+  position: absolute;
+  user-select: none;
+  z-index: 2000;
+  display: block;
+  padding: 0.25rem 0;
+  margin: 0;
+  text-align: left; 
+  background-color: white;
+  background-clip: padding-box;
+  border-radius: 2px;
+  min-width: 200px;
+  font-size: 0.75rem;
+  box-shadow: 3px 3px #00000010;
+}
+.react-context-menu-option, .react-context-menu-option {
+  box-sizing: border-box;
+  font-weight: 400;
+  color: #505050;
+}
+
+.react-context-menu-option {
+  cursor:context-menu;
+  position: relative;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: .25rem 1.5rem;
+  clear: both;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.react-context-menu-option:hover{
+
+background-color: #f3f3f3
+}
+
+.react-context-menu-divider{
+margin: 0.4rem 0;
+border-bottom: 1px solid;
+border-bottom-color: #eaeaea;
+}
+
+.react-context-menu-anchor {
+  position:absolute;
+}
+
+/* Dark Theme */
+
+.react-context-menu.theme-dark {
+  background-color: #353538;;
+  border-color: #4c4c4c;
+}
+
+.react-context-menu.theme-dark>.react-context-menu-option {
+  color:#f2f1f6
+
+}
+
+.react-context-menu.theme-dark>.react-context-menu-option:hover {
+  background-color: #4a4b4d;
+  }
+  .react-context-menu.theme-dark>.react-context-menu-divider {
+  border-bottom-color: #4c4c4c;
+  }
+
+  .react-context-menu.expand-menu {
+    display: none;
+}
+
+.expand-option:hover>.react-context-menu.expand-menu {
+  display: block;
+}
+
