@@ -34,9 +34,8 @@
   border: 0;
 }
 
-.react-context-menu-option:hover{
-
-background-color: #f3f3f3
+.react-context-menu-option.active:hover{
+  background-color: #f3f3f3
 }
 
 .react-context-menu-divider{
@@ -58,17 +57,21 @@ border-bottom-color: #eaeaea;
 
 .react-context-menu.theme-dark>.react-context-menu-option {
   color:#f2f1f6
-
 }
 
-.react-context-menu.theme-dark>.react-context-menu-option:hover {
-  background-color: #4a4b4d;
-  }
-  .react-context-menu.theme-dark>.react-context-menu-divider {
-  border-bottom-color: #4c4c4c;
-  }
+.react-context-menu.theme-dark>.react-context-menu-option.disabled {
+  color:#949494
+}
 
-  .react-context-menu.expand-menu {
+.react-context-menu.theme-dark>.react-context-menu-option.active:hover {
+  background-color: #4a4b4d;
+}
+
+.react-context-menu.theme-dark>.react-context-menu-divider {
+  border-bottom-color: #4c4c4c;
+}
+
+.react-context-menu.expand-menu {
     display: none;
 }
 

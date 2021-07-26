@@ -4,7 +4,11 @@ import ContextMenuTriggerArea from './components/ContextMenuTriggerArea';
 import useContextMenu from './useContextMenu';
 
 export {
-  ContextMenu, createBridge, ContextMenuBridge, ContextMenuTriggerArea, useContextMenu,
+  ContextMenu,
+  createBridge,
+  ContextMenuBridge,
+  ContextMenuTriggerArea,
+  useContextMenu,
 };
 
 export default ContextMenu;

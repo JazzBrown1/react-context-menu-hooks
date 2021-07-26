@@ -1,43 +1,63 @@
-import React from 'react';
-import './App.css';
-import { ContextMenuTriggerArea, useContextMenu } from 'react-context-menu-hooks';
-import MyContextMenu, { myContextMenuBridge } from './MyContextMenu';
-
+import React, { useState } from 'react';
+import { ContextMenuTriggerArea } from 'react-context-menu-hooks';
 import '../node_modules/react-context-menu-hooks/src/ContextMenu.css';
 
+import './App.css';
+
+import MyContextMenu from './MyContextMenu';
+import { myContextMenuBridge } from './myContextMenuBridge';
+
+const Shape = () => {
+  const [color, setColor] = useState<string>('blue');
+  const [shape, setShape] = useState<string>('circle');
+
+  return (
+    <ContextMenuTriggerArea
+      bridge={myContextMenuBridge}
+      className={`shape ${color} ${shape}`}
+      data={{
+        color,
+        changeColor: (newColor) => {
+          setColor(newColor);
+        },
+        shape,
+        changeShape: (newColor) => {
+          setShape(newColor);
+        },
+      }}
+    >
+      <p>Right click and change how I look!</p>
+    </ContextMenuTriggerArea>
+  );
+};
+
 function App():JSX.Element {
-  const { data } = useContextMenu(myContextMenuBridge);
   return (
     <div className="App">
-      {data.color}
+      <h1>react-context-menu-hooks example</h1>
       <MyContextMenu />
-      <ContextMenuTriggerArea
-        bridge={myContextMenuBridge}
-        data={{
-          color: 'red',
-          changeColor: (color) => {
-            console.log(color);
-          },
-        }}
-        style={{
-          width: 300, height: 300, padding: 75, backgroundColor: 'red', display: 'block', borderRadius: 10,
-        }}
-      >
-        <ContextMenuTriggerArea
-          bridge={myContextMenuBridge}
-          data={{
-            color: 'blue',
-            changeColor: (color) => {
-              console.log(color);
-            },
-          }}
-          style={{
-            width: '100%', height: '100%', backgroundColor: 'blue', display: 'block', borderRadius: 10,
-          }}
-        >
-          Click Here
-        </ContextMenuTriggerArea>
-      </ContextMenuTriggerArea>
+      <div>
+        <Shape />
+        <Shape />
+      </div>
+      <div>
+        <Shape />
+        <Shape />
+      </div>
+      <p>
+        Check out the
+        {' '}
+        <a href="https://github.com/JazzBrown1/react-context-menu-hooks" rel="noreferrer" target="_blank">
+          Github
+        </a>
+      </p>
+      <p>
+        The example source code available
+        {' '}
+        <a href="https://github.com/JazzBrown1/react-context-menu-hooks/tree/main/example" rel="noreferrer" target="_blank">
+          here
+        </a>
+      </p>
     </div>
   );
 }

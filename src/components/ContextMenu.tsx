@@ -15,7 +15,7 @@ export type XYPosition = {
   y: number
 };
 
-interface ContextMenuExpand<T> {
+interface ContextMenuProps<T> {
   children: ChildrenProp,
   style?: React.CSSProperties,
   bridge: ContextMenuBridge<T>,
@@ -28,9 +28,9 @@ interface ContextMenuExpand<T> {
 function ContextMenu<T>(
   {
     children, style = {}, bridge, dark = false, onSelect, anchored,
-  }: ContextMenuExpand<T>,
+  }: ContextMenuProps<T>,
 ): JSX.Element {
-  const ref = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const { clickPosition, open } = useContextMenu(bridge);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [relativePosition, setRelativePosition] = useState<XYPosition>({ x: 0, y: 0 });
@@ -41,8 +41,8 @@ function ContextMenu<T>(
       const handleOutsideClick = (e: CMMouseEvent) => {
         if (
           open
-          && ref.current
-          && e.target && e.target instanceof Element && !ref.current.contains(e.target)
+          && menuRef.current
+          && e.target && e.target instanceof Element && !menuRef.current.contains(e.target)
         ) {
           bridge.handleClose(e);
         }
@@ -60,9 +60,24 @@ function ContextMenu<T>(
       setRelativePosition(clickPosition);
       return;
     }
-    if (!anchorRef.current) return;
-    const rect = anchorRef.current.getBoundingClientRect();
-    setRelativePosition({ x: clickPosition.x - rect.left, y: clickPosition.y - rect.top });
+
+    if (!anchorRef.current || !menuRef.current) return;
+    const anchorRect = anchorRef.current.getBoundingClientRect();
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const canGoRight = window.innerWidth - clickPosition.x > menuRect.width;
+    const canGoDown = window.innerHeight - clickPosition.y > menuRect.height;
+    const canGoUp = clickPosition.y > menuRect.height;
+    const x = canGoRight
+      ? clickPosition.x - anchorRect.left
+      : clickPosition.x - anchorRect.left - menuRect.width;
+    // eslint-disable-next-line no-nested-ternary
+    const y = canGoDown
+      ? clickPosition.y - anchorRect.top
+      : (canGoUp
+        ? clickPosition.y - anchorRect.top - menuRect.height
+        : window.innerHeight - menuRect.height - anchorRect.top - 10
+      );
+    setRelativePosition({ x, y });
   }, [clickPosition, open]);
 
   const styles:React.CSSProperties = {
@@ -74,21 +89,32 @@ function ContextMenu<T>(
       anchored: false,
     },
   };
+
+  const doSelect = (action:string, event:CMMouseEvent): void => {
+    if (onSelect) onSelect(action, event);
+  };
+
+  const doClose = (e:CMMouseEvent) => {
+    bridge.forceClose(e);
+  };
+
   return (
-    <CMContext.Provider value={{
-      close: (e) => {
-        console.log('this happened', e);
-        bridge.forceClose(e);
-      },
-      doSelect: (action, event) => {
-        if (onSelect) onSelect(action, event);
-      },
-      bridge,
-      dark,
-    }}
+    <CMContext.Provider
+      value={{
+        doClose,
+        doSelect,
+        bridge,
+        dark,
+      }}
     >
       <div className="react-context-menu-anchor" ref={anchorRef}>
-        <div className={`react-context-menu${dark ? ' theme-dark' : ''}`} style={styles} ref={ref} children={children} />
+        <div
+          className={`react-context-menu${dark ? ' theme-dark' : ''}`}
+          style={styles}
+          ref={menuRef}
+          children={children}
+          onContextMenu={(e) => { e.preventDefault(); }}
+        />
       </div>
     </CMContext.Provider>
   );

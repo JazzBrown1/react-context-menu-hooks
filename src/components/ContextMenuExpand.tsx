@@ -1,13 +1,12 @@
 /* eslint-disable react/no-children-prop */
 import React, {
-  useState, useRef, useEffect, useLayoutEffect, useContext,
+  useState, useRef, useLayoutEffect, useContext,
 } from 'react';
 import { CMMouseEvent } from '../ContextMenuBridge';
-import useContextMenu from '../useContextMenu';
 import { CMContext } from './ContextMenuOption';
 import { ChildrenProp, XYPosition } from './ContextMenu';
 
-interface ContextMenuExpandProps {
+export interface ContextMenuExpandProps {
   children: ChildrenProp,
   style?: React.CSSProperties,
   onSelect?: (action: string, event: CMMouseEvent) => void ;
@@ -15,33 +14,41 @@ interface ContextMenuExpandProps {
 }
 
 // eslint-disable-next-line react/require-default-props
-function ContextMenuExpand(
-  {
-    children, style = {}, onSelect, text,
-  }: ContextMenuExpandProps,
-): JSX.Element {
+const ContextMenuExpand = ({
+  children, style = {}, onSelect, text,
+}: ContextMenuExpandProps): JSX.Element => {
   const { bridge, dark } = useContext(CMContext);
-  const ref = useRef<HTMLDivElement>(null);
-  const { clickPosition, open } = useContextMenu(bridge);
+  const optionRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [relativePosition, setRelativePosition] = useState<XYPosition>({ x: 0, y: 0 });
+  const [expanded, setExpanded] = useState(false);
 
   useLayoutEffect(() => {
-    if (!open) return;
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    setRelativePosition({ x: rect.width, y: 0 });
-  }, [clickPosition, open]);
+    if (!expanded || !optionRef.current || !menuRef.current) return;
+    const optionRect = optionRef.current.getBoundingClientRect();
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const canGoRight = window.innerWidth - optionRect.right > menuRect.width;
+    const canGoDown = window.innerHeight - optionRect.top > menuRect.height;
+    const x = canGoRight
+      ? optionRect.width
+      : -optionRect.width;
+    const y = canGoDown
+      ? 0
+      : window.innerHeight - menuRect.height - optionRect.top - 10;
+    // console.log('expand', canGoDown, window.innerHeight, menuRect.height, optionRect.top, y);
+    setRelativePosition({ x, y });
+  }, [expanded]);
 
   const styles:React.CSSProperties = {
     ...style,
-    ...{
-      top: 0,
-      left: relativePosition.x,
-    },
+    display: expanded ? 'block' : 'none',
+    top: relativePosition.y,
+    left: relativePosition.x,
   };
+
   return (
     <CMContext.Provider value={{
-      close: (e) => {
+      doClose: (e) => {
         bridge.forceClose(e);
       },
       doSelect: (action, event) => {
@@ -51,7 +58,13 @@ function ContextMenuExpand(
       dark,
     }}
     >
-      <div className="react-context-menu-option expand-option" ref={ref} style={{ position: 'relative' }}>
+      <div
+        onMouseEnter={() => { setExpanded(true); }}
+        onMouseLeave={() => { setExpanded(false); }}
+        className="react-context-menu-option active expand-option"
+        ref={optionRef}
+        style={{ position: 'relative' }}
+      >
         {text}
         <span style={{
           position: 'absolute', right: '0.5rem', top: '0.4rem', fontSize: '0.5rem',
@@ -59,13 +72,17 @@ function ContextMenuExpand(
         >
           ▶
         </span>
-        <div className={`react-context-menu expand-menu${dark ? ' theme-dark' : 'theme-light'}`} style={styles}>
+        <div
+          className={`react-context-menu expand-menu${dark ? ' theme-dark' : 'theme-light'}`}
+          ref={menuRef}
+          style={styles}
+        >
           {children}
         </div>
       </div>
     </CMContext.Provider>
   );
-}
+};
 
 ContextMenuExpand.defaultProps = {
   style: {},

@@ -4,43 +4,49 @@ import React, { createContext, useContext } from 'react';
 import ContextMenuBridge, { CMMouseEvent } from '../ContextMenuBridge';
 import { ChildrenProp } from './ContextMenu';
 
-export interface ContextMenuOptionProps {
-  children: ChildrenProp,
-  href?:string,
-  onClick?: () => void,
-  select?: string
-}
-
 interface CMContextType {
-  close: (e: CMMouseEvent) => void,
+  doClose: (e: CMMouseEvent) => void,
   doSelect: (action: string, event: CMMouseEvent) => void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bridge: ContextMenuBridge<any>;
   dark: boolean;
 }
 
 export const CMContext = createContext<CMContextType>({
-  close: (e: CMMouseEvent) => {
-  // do someything
+  doClose: () => {
+    // do something
   },
-  doSelect: (action: string, event: CMMouseEvent) => {
-  // do someything
+  doSelect: () => {
+    // do something
   },
   bridge: new ContextMenuBridge({}),
   dark: false,
 });
 
+export interface ContextMenuOptionProps {
+  children: ChildrenProp,
+  href?:string,
+  onClick?: (event: CMMouseEvent) => void ;
+  select?: string;
+  disabled?: boolean
+}
+
 const ContextMenuOption = (
   {
-    children, href, onClick, select,
+    children, href, onClick, select, disabled,
   }: ContextMenuOptionProps,
 ):JSX.Element => {
-  const { close, doSelect } = useContext(CMContext);
+  const { doClose, doSelect } = useContext(CMContext);
   const handleClick = (e:CMMouseEvent) => {
     e.preventDefault();
-    if (select) doSelect(select, e);
+    if (disabled) return;
+    if (select) {
+      doSelect(select, e);
+      doClose(e);
+    }
     if (onClick) {
-      onClick();
-      close(e);
+      onClick(e);
+      doClose(e);
     }
   };
 
@@ -49,7 +55,7 @@ const ContextMenuOption = (
       onClick={handleClick}
       onContextMenu={handleClick}
       href={href || '#'}
-      className="react-context-menu-option"
+      className={`react-context-menu-option ${disabled ? 'disabled' : 'active'}`}
       aria-label="link"
       children={children}
     />
@@ -60,6 +66,7 @@ ContextMenuOption.defaultProps = {
   href: undefined,
   onClick: undefined,
   select: undefined,
+  disabled: false,
 };
 
 export default ContextMenuOption;
