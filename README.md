@@ -23,8 +23,6 @@ React Context Menu Hooks is an easy to use and feature rich scalable custom cont
 
 #### Think carefully when adding custom context menus to your app, most mobile users will not be able to open a context menu, so if you are targeting mobile users for your app, you should not have functionality that is only accessible in context menus.
 
-### Demo coming soon
-
 ## Install
 ```
 $ npm install react-context-menu-hooks
