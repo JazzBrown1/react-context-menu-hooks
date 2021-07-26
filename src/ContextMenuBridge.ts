@@ -47,7 +47,7 @@ class ContextMenuBridge <Type> {
   handleOpen = (event: CMMouseEvent, data: Type) : void => {
     if (event.defaultPrevented) return;
     event.preventDefault();
-    console.log('bridgeOpenEvent', event, data, this.hookListeners.length);
+    // console.log('bridgeOpenEvent', event, data, this.hookListeners.length);
     this.data = data;
     this.open = true;
     this.clickPosition = { x: event.pageX, y: event.pageY };
@@ -56,14 +56,14 @@ class ContextMenuBridge <Type> {
 
   handleClose = (event: CMMouseEvent) : void => {
     if (event.defaultPrevented) return;
-    console.log('bridgeCloseEvent', event, this.hookListeners.length);
+    // console.log('bridgeCloseEvent', event, this.hookListeners.length);
     this.data = this.defaultData;
     this.open = false;
     this.dispatch(event);
   }
 
   forceClose = (event: CMMouseEvent) : void => {
-    console.log('bridgeForceCloseEvent', event, this.hookListeners.length);
+    // console.log('bridgeForceCloseEvent', event, this.hookListeners.length);
     this.data = this.defaultData;
     this.open = false;
     this.dispatch(event);

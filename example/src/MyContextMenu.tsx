@@ -29,9 +29,10 @@ function MyContextMenu():JSX.Element {
     changeColor('blue');
     changeShape('circle');
   };
+  const darkMode: boolean = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   return (
-    <ContextMenu dark bridge={myContextMenuBridge}>
+    <ContextMenu dark={darkMode} bridge={myContextMenuBridge}>
       <ContextMenu.Option onClick={handleCopy}>Copy Shape Styles</ContextMenu.Option>
       <ContextMenu.Option disabled={!clipboard} onClick={handlePaste}>
         Paste Shape Styles

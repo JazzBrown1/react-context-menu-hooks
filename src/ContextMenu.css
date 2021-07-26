@@ -12,7 +12,7 @@
   border-radius: 2px;
   min-width: 200px;
   font-size: 0.75rem;
-  box-shadow: 3px 3px #00000010;
+  box-shadow: 1px 1px 2px #00000080;
 }
 .react-context-menu-option, .react-context-menu-option {
   box-sizing: border-box;
@@ -34,6 +34,10 @@
   border: 0;
 }
 
+.react-context-menu-option.disabled {
+  color:#969696
+}
+
 .react-context-menu-option.active:hover{
   background-color: #f3f3f3
 }
@@ -41,7 +45,7 @@
 .react-context-menu-divider{
 margin: 0.4rem 0;
 border-bottom: 1px solid;
-border-bottom-color: #eaeaea;
+border-bottom-color: #dbdbdb;
 }
 
 .react-context-menu-anchor {

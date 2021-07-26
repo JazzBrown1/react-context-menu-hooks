@@ -17,7 +17,7 @@ const ContextMenuTriggerArea = <T extends unknown>(props : Props<T>):JSX.Element
     <div
       {...other}
       onContextMenu={(e) => {
-        console.log('trigger', data);
+        // console.log('trigger', data);
         if (bridge) bridge.handleOpen(e, data);
       }}
       children={children}

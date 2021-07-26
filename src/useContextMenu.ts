@@ -19,7 +19,7 @@ const useContextMenu = <Type>(bridge : ContextMenuBridge<Type>) : {
     const listener = (event: CMMouseEvent, data: Type, open: boolean) => {
       const clickPosition = { x: event.pageX, y: event.pageY };
       setState({ data, clickPosition, open });
-      console.log('hook-listener', { open, event, data });
+      // console.log('hook-listener', { open, event, data });
     };
     bridge.addListener(listener);
     return () => {

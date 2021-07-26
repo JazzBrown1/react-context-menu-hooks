@@ -35,7 +35,6 @@ const ContextMenuExpand = ({
     const y = canGoDown
       ? 0
       : window.innerHeight - menuRect.height - optionRect.top - 10;
-    // console.log('expand', canGoDown, window.innerHeight, menuRect.height, optionRect.top, y);
     setRelativePosition({ x, y });
   }, [expanded]);
 

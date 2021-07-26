@@ -12,7 +12,7 @@ const useContextMenu = (bridge) => {
         const listener = (event, data, open) => {
             const clickPosition = { x: event.pageX, y: event.pageY };
             setState({ data, clickPosition, open });
-            console.log('hook-listener', { open, event, data });
+            // console.log('hook-listener', { open, event, data });
         };
         bridge.addListener(listener);
         return () => {
@@ -50,7 +50,7 @@ class ContextMenuBridge {
             if (event.defaultPrevented)
                 return;
             event.preventDefault();
-            console.log('bridgeOpenEvent', event, data, this.hookListeners.length);
+            // console.log('bridgeOpenEvent', event, data, this.hookListeners.length);
             this.data = data;
             this.open = true;
             this.clickPosition = { x: event.pageX, y: event.pageY };
@@ -59,13 +59,13 @@ class ContextMenuBridge {
         this.handleClose = (event) => {
             if (event.defaultPrevented)
                 return;
-            console.log('bridgeCloseEvent', event, this.hookListeners.length);
+            // console.log('bridgeCloseEvent', event, this.hookListeners.length);
             this.data = this.defaultData;
             this.open = false;
             this.dispatch(event);
         };
         this.forceClose = (event) => {
-            console.log('bridgeForceCloseEvent', event, this.hookListeners.length);
+            // console.log('bridgeForceCloseEvent', event, this.hookListeners.length);
             this.data = this.defaultData;
             this.open = false;
             this.dispatch(event);
@@ -132,7 +132,6 @@ const ContextMenuExpand = ({ children, style = {}, onSelect, text, }) => {
         const y = canGoDown
             ? 0
             : window.innerHeight - menuRect.height - optionRect.top - 10;
-        // console.log('expand', canGoDown, window.innerHeight, menuRect.height, optionRect.top, y);
         setRelativePosition({ x, y });
     }, [expanded]);
     const styles = Object.assign(Object.assign({}, style), { display: expanded ? 'block' : 'none', top: relativePosition.y, left: relativePosition.x });
@@ -268,7 +267,7 @@ function __rest(s, e) {
 const ContextMenuTriggerArea = (props) => {
     const { children, data, bridge } = props, other = __rest(props, ["children", "data", "bridge"]);
     return (jsx("div", Object.assign({}, other, { onContextMenu: (e) => {
-            console.log('trigger', data);
+            // console.log('trigger', data);
             if (bridge)
                 bridge.handleOpen(e, data);
         }, children: children }), void 0));
