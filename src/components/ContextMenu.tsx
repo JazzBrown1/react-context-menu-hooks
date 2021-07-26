@@ -20,14 +20,23 @@ interface ContextMenuProps<T> {
   style?: React.CSSProperties,
   bridge: ContextMenuBridge<T>,
   dark?: boolean,
-  anchored?: boolean,
   onSelect?: (action: string, event: CMMouseEvent) => void ;
 }
+
+const getYDirection = (menuRect: DOMRect, clickPosition: XYPosition): string => {
+  if (window.innerHeight + window.pageYOffset - clickPosition.y > menuRect.height) return 'down';
+  if (clickPosition.y - window.pageYOffset > menuRect.height) return 'up';
+  return 'center';
+};
+const getXDirection = (menuRect: DOMRect, clickPosition: XYPosition): string => {
+  if (window.innerWidth + window.pageXOffset - clickPosition.x > menuRect.width) return 'right';
+  return 'left';
+};
 
 // eslint-disable-next-line react/require-default-props
 function ContextMenu<T>(
   {
-    children, style = {}, bridge, dark = false, onSelect, anchored,
+    children, style = {}, bridge, dark = false, onSelect,
   }: ContextMenuProps<T>,
 ): JSX.Element {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -56,27 +65,23 @@ function ContextMenu<T>(
 
   useLayoutEffect(() => {
     if (!open) return;
-    if (!anchored) {
-      setRelativePosition(clickPosition);
-      return;
-    }
-
     if (!anchorRef.current || !menuRef.current) return;
+
     const anchorRect = anchorRef.current.getBoundingClientRect();
     const menuRect = menuRef.current.getBoundingClientRect();
-    const canGoRight = window.innerWidth - clickPosition.x > menuRect.width;
-    const canGoDown = window.innerHeight - clickPosition.y > menuRect.height;
-    const canGoUp = clickPosition.y > menuRect.height;
-    const x = canGoRight
-      ? clickPosition.x - anchorRect.left
-      : clickPosition.x - anchorRect.left - menuRect.width;
+
+    const xDir = getXDirection(menuRect, clickPosition);
+    const yDir = getYDirection(menuRect, clickPosition);
+
+    const x = xDir === 'right'
+      ? clickPosition.x - window.pageXOffset - anchorRect.left
+      : clickPosition.x - window.pageXOffset - anchorRect.left - menuRect.width;
     // eslint-disable-next-line no-nested-ternary
-    const y = canGoDown
-      ? clickPosition.y - anchorRect.top
-      : (canGoUp
-        ? clickPosition.y - anchorRect.top - menuRect.height
-        : window.innerHeight - menuRect.height - anchorRect.top - 10
-      );
+    const y = yDir === 'down'
+      ? clickPosition.y - window.pageYOffset - anchorRect.top
+      : yDir === 'up'
+        ? clickPosition.y - window.pageYOffset - anchorRect.top - menuRect.height
+        : window.innerHeight - menuRect.height - (anchorRect.top) - 10;
     setRelativePosition({ x, y });
   }, [clickPosition, open]);
 
@@ -124,7 +129,6 @@ ContextMenu.defaultProps = {
   style: {},
   dark: false,
   onSelect: undefined,
-  anchored: true,
 };
 
 ContextMenu.Option = ContextMenuOption;

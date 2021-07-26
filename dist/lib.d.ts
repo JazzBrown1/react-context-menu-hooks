@@ -43,16 +43,14 @@ interface ContextMenuProps<T> {
     style?: React.CSSProperties;
     bridge: ContextMenuBridge<T>;
     dark?: boolean;
-    anchored?: boolean;
     onSelect?: (action: string, event: CMMouseEvent) => void;
 }
-declare function ContextMenu<T>({ children, style, bridge, dark, onSelect, anchored, }: ContextMenuProps<T>): JSX.Element;
+declare function ContextMenu<T>({ children, style, bridge, dark, onSelect, }: ContextMenuProps<T>): JSX.Element;
 declare namespace ContextMenu {
     var defaultProps: {
         style: {};
         dark: boolean;
         onSelect: undefined;
-        anchored: boolean;
     };
     var Option: {
         ({ children, href, onClick, select, disabled, }: ContextMenuOptionProps): JSX.Element;
