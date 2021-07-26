@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/react-context-menu-hooks/static/css/main.0018f64d.chunk.css",
-    "main.js": "/react-context-menu-hooks/static/js/main.5b88d3e9.chunk.js",
-    "main.js.map": "/react-context-menu-hooks/static/js/main.5b88d3e9.chunk.js.map",
+    "main.css": "/react-context-menu-hooks/static/css/main.a7e4347a.chunk.css",
+    "main.js": "/react-context-menu-hooks/static/js/main.c6964e49.chunk.js",
+    "main.js.map": "/react-context-menu-hooks/static/js/main.c6964e49.chunk.js.map",
     "runtime-main.js": "/react-context-menu-hooks/static/js/runtime-main.97099a60.js",
     "runtime-main.js.map": "/react-context-menu-hooks/static/js/runtime-main.97099a60.js.map",
     "static/js/2.63cccb58.chunk.js": "/react-context-menu-hooks/static/js/2.63cccb58.chunk.js",
@@ -10,14 +10,14 @@
     "static/js/3.5f6ce0b4.chunk.js": "/react-context-menu-hooks/static/js/3.5f6ce0b4.chunk.js",
     "static/js/3.5f6ce0b4.chunk.js.map": "/react-context-menu-hooks/static/js/3.5f6ce0b4.chunk.js.map",
     "index.html": "/react-context-menu-hooks/index.html",
-    "static/css/main.0018f64d.chunk.css.map": "/react-context-menu-hooks/static/css/main.0018f64d.chunk.css.map",
+    "static/css/main.a7e4347a.chunk.css.map": "/react-context-menu-hooks/static/css/main.a7e4347a.chunk.css.map",
     "static/js/2.63cccb58.chunk.js.LICENSE.txt": "/react-context-menu-hooks/static/js/2.63cccb58.chunk.js.LICENSE.txt",
-    "static/js/main.5b88d3e9.chunk.js.LICENSE.txt": "/react-context-menu-hooks/static/js/main.5b88d3e9.chunk.js.LICENSE.txt"
+    "static/js/main.c6964e49.chunk.js.LICENSE.txt": "/react-context-menu-hooks/static/js/main.c6964e49.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.97099a60.js",
     "static/js/2.63cccb58.chunk.js",
-    "static/css/main.0018f64d.chunk.css",
-    "static/js/main.5b88d3e9.chunk.js"
+    "static/css/main.a7e4347a.chunk.css",
+    "static/js/main.c6964e49.chunk.js"
   ]
 }
