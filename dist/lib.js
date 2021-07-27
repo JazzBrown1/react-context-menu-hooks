@@ -114,7 +114,7 @@ const ContextMenuDivider = () => (jsx("div", { className: "react-context-menu-di
 
 // eslint-disable-next-line react/require-default-props
 const ContextMenuExpand = ({ children, style = {}, onSelect, text, }) => {
-    const { bridge, dark } = useContext(CMContext);
+    const { bridge, dark, doSelect } = useContext(CMContext);
     const optionRef = useRef(null);
     const menuRef = useRef(null);
     const [relativePosition, setRelativePosition] = useState({ x: 0, y: 0 });
@@ -142,6 +142,8 @@ const ContextMenuExpand = ({ children, style = {}, onSelect, text, }) => {
             doSelect: (action, event) => {
                 if (onSelect)
                     onSelect(action, event);
+                else
+                    doSelect(action, event);
             },
             bridge,
             dark,
