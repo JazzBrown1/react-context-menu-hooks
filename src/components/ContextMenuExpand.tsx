@@ -17,7 +17,7 @@ export interface ContextMenuExpandProps {
 const ContextMenuExpand = ({
   children, style = {}, onSelect, text,
 }: ContextMenuExpandProps): JSX.Element => {
-  const { bridge, dark } = useContext(CMContext);
+  const { bridge, dark, doSelect } = useContext(CMContext);
   const optionRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [relativePosition, setRelativePosition] = useState<XYPosition>({ x: 0, y: 0 });
@@ -52,6 +52,7 @@ const ContextMenuExpand = ({
       },
       doSelect: (action, event) => {
         if (onSelect) onSelect(action, event);
+        else doSelect(action, event);
       },
       bridge,
       dark,
