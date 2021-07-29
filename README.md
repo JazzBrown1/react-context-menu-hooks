@@ -12,15 +12,6 @@ React Context Menu Hooks is an easy to use and feature rich scalable custom cont
 - CSS based easy to control, style, update and themes
 - Dark mode theme
 
-### Coming soon
-- Automatic mounting and unmounting of menus based on active trigger areas (immanent)
-
-### Maybe in the future
-- Styled Components integrations
-- SASS generated CSS
-- Mobile Context Menus - Long press menus and full width bottom up menus
-- Scrolling menus for very long context menus that exceed the screen height
-
 #### Think carefully when adding custom context menus to your app, most mobile users will not be able to open a context menu, so if you are targeting mobile users for your app, you should not have functionality that is only accessible in context menus.
 
 ## Install
@@ -75,7 +66,7 @@ const Shape = () => {
   return (
     <ContextMenuTriggerArea
       bridge={myContextMenuBridge}
-      className={`shape ${color} ${shape}`}
+      className={`shape ${color}`}
       data={{
         color,
         changeColor: (newColor) => { setColor(newColor) },
