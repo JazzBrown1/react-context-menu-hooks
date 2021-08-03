@@ -14,10 +14,13 @@
   font-size: 0.75rem;
   box-shadow: 1px 1px 2px #00000080;
 }
-.react-context-menu-option, .react-context-menu-option {
+.react-context-menu-option {
   box-sizing: border-box;
   font-weight: 400;
+}
+.react-context-menu-option, .react-context-menu-option:hover {
   color: #505050;
+  text-decoration: none;
 }
 
 .react-context-menu-option {
@@ -69,11 +72,15 @@ border-bottom-color: #dbdbdb;
 
 .react-context-menu.theme-dark>.react-context-menu-option.active:hover {
   background-color: #4a4b4d;
+  color:#f2f1f6
 }
 
 .react-context-menu.theme-dark>.react-context-menu-divider {
   border-bottom-color: #4c4c4c;
 }
+
+
+/* Expand */
 
 .react-context-menu.expand-menu {
     display: none;
