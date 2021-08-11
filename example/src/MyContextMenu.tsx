@@ -10,10 +10,9 @@ type NaiveClipboardData = {
 
 function MyContextMenu():JSX.Element {
   const [clipboard, setClipboard] = useState<NaiveClipboardData>();
-  const { data } = useContextMenu(myContextMenuBridge);
   const {
     changeColor, changeShape, color, shape,
-  } = data;
+  } = useContextMenu(myContextMenuBridge);
 
   const handleColorSelect = (action: string) => { changeColor(action); };
   const handleShapeSelect = (action: string) => { changeShape(action); };

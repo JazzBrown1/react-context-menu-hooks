@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-children-prop */
 import React, {
   useState, useRef, useEffect, useLayoutEffect,
 } from 'react';
 import ContextMenuBridge, { CMMouseEvent } from '../ContextMenuBridge';
-import useContextMenu from '../useContextMenu';
+import useContextMenuDetails from '../useContextMenuDetails';
 import ContextMenuOption, { CMContext } from './ContextMenuOption';
 import ContextMenuDivider from './ContextMenuDivider';
 import ContextMenuExpand from './ContextMenuExpand';
@@ -15,8 +16,7 @@ export type XYPosition = {
   y: number
 };
 
-interface ContextMenuProps<T> {
-  children: ChildrenProp,
+export interface ContextMenuProps<T> extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onSelect'> {
   style?: React.CSSProperties,
   bridge: ContextMenuBridge<T>,
   dark?: boolean,
@@ -35,12 +35,13 @@ const getXDirection = (menuRect: DOMRect, clickPosition: XYPosition): string => 
 
 // eslint-disable-next-line react/require-default-props
 function ContextMenu<T>(
-  {
-    children, style = {}, bridge, dark = false, onSelect,
-  }: ContextMenuProps<T>,
+  props: ContextMenuProps<T>,
 ): JSX.Element {
+  const {
+    children, style, bridge, dark = false, onSelect, className, ...other
+  } = props;
   const menuRef = useRef<HTMLDivElement>(null);
-  const { clickPosition, open } = useContextMenu(bridge);
+  const { clickPosition, open } = useContextMenuDetails(bridge);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [relativePosition, setRelativePosition] = useState<XYPosition>({ x: 0, y: 0 });
 
@@ -114,11 +115,12 @@ function ContextMenu<T>(
     >
       <div className="react-context-menu-anchor" ref={anchorRef}>
         <div
-          className={`react-context-menu${dark ? ' theme-dark' : ''}`}
+          {...other}
+          className={`react-context-menu ${className || ''} ${dark ? ' theme-dark' : ''}`}
           style={styles}
           ref={menuRef}
-          children={children}
           onContextMenu={(e) => { e.preventDefault(); }}
+          children={children}
         />
       </div>
     </CMContext.Provider>

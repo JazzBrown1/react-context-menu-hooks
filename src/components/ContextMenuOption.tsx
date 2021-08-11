@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext } from 'react';
 import ContextMenuBridge, { CMMouseEvent } from '../ContextMenuBridge';
-import { ChildrenProp } from './ContextMenu';
 
 interface CMContextType {
   doClose: (e: CMMouseEvent) => void,
@@ -23,19 +22,17 @@ export const CMContext = createContext<CMContextType>({
   dark: false,
 });
 
-export interface ContextMenuOptionProps {
-  children: ChildrenProp,
-  href?:string,
+export interface ContextMenuOptionProps extends React.DetailedHTMLProps<
+React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   onClick?: (event: CMMouseEvent) => void ;
   select?: string;
   disabled?: boolean
 }
 
-const ContextMenuOption = (
-  {
-    children, href, onClick, select, disabled,
-  }: ContextMenuOptionProps,
-):JSX.Element => {
+const ContextMenuOption = (props : ContextMenuOptionProps):JSX.Element => {
+  const {
+    children, onClick, select, disabled, href, className, ...other
+  } = props;
   const { doClose, doSelect } = useContext(CMContext);
   const handleClick = (e:CMMouseEvent) => {
     e.preventDefault();
@@ -52,10 +49,12 @@ const ContextMenuOption = (
 
   return (
     <a
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...other}
       onClick={handleClick}
       onContextMenu={handleClick}
       href={href || '#'}
-      className={`react-context-menu-option ${disabled ? 'disabled' : 'active'}`}
+      className={`react-context-menu-option ${className || ''} ${disabled ? 'disabled' : 'active'}`}
       aria-label="link"
       children={children}
     />

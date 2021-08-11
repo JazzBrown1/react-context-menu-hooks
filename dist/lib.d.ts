@@ -18,34 +18,29 @@ declare class ContextMenuBridge<Type> {
 }
 declare const createBridge: <Type>(defaultData: Type) => ContextMenuBridge<Type>;
 
-interface ContextMenuExpandProps {
-    children: ChildrenProp;
+interface ContextMenuExpandProps extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onSelect'> {
     style?: React.CSSProperties;
     onSelect?: (action: string, event: CMMouseEvent) => void;
     text: string;
 }
 
-interface ContextMenuOptionProps {
-    children: ChildrenProp;
-    href?: string;
+interface ContextMenuOptionProps extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
     onClick?: (event: CMMouseEvent) => void;
     select?: string;
     disabled?: boolean;
 }
 
-declare type ChildrenProp = React.ReactChild | React.ReactChild[];
 declare type XYPosition = {
     x: number;
     y: number;
 };
-interface ContextMenuProps<T> {
-    children: ChildrenProp;
+interface ContextMenuProps<T> extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onSelect'> {
     style?: React.CSSProperties;
     bridge: ContextMenuBridge<T>;
     dark?: boolean;
     onSelect?: (action: string, event: CMMouseEvent) => void;
 }
-declare function ContextMenu<T>({ children, style, bridge, dark, onSelect, }: ContextMenuProps<T>): JSX.Element;
+declare function ContextMenu<T>(props: ContextMenuProps<T>): JSX.Element;
 declare namespace ContextMenu {
     var defaultProps: {
         style: {};
@@ -53,7 +48,7 @@ declare namespace ContextMenu {
         onSelect: undefined;
     };
     var Option: {
-        ({ children, href, onClick, select, disabled, }: ContextMenuOptionProps): JSX.Element;
+        (props: ContextMenuOptionProps): JSX.Element;
         defaultProps: {
             href: undefined;
             onClick: undefined;
@@ -63,7 +58,7 @@ declare namespace ContextMenu {
     };
     var Divider: () => JSX.Element;
     var Expand: {
-        ({ children, style, onSelect, text, }: ContextMenuExpandProps): JSX.Element;
+        (props: ContextMenuExpandProps): JSX.Element;
         defaultProps: {
             style: {};
             onSelect: undefined;
@@ -71,11 +66,13 @@ declare namespace ContextMenu {
     };
 }
 
-interface Props<T extends unknown> extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface ContextMenuTriggerAreaProps<T extends unknown> extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     bridge: ContextMenuBridge<T>;
     data: T;
 }
-declare const ContextMenuTriggerArea: <T extends unknown>(props: Props<T>) => JSX.Element;
+declare const ContextMenuTriggerArea: <T extends unknown>(props: ContextMenuTriggerAreaProps<T>) => JSX.Element;
+
+declare const useContextMenu$1: <Type>(bridge: ContextMenuBridge<Type>) => Type;
 
 declare const useContextMenu: <Type>(bridge: ContextMenuBridge<Type>) => {
     clickPosition: XYPosition;
@@ -84,4 +81,4 @@ declare const useContextMenu: <Type>(bridge: ContextMenuBridge<Type>) => {
 };
 
 export default ContextMenu;
-export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu };
+export { ContextMenu, ContextMenuBridge, ContextMenuExpandProps, ContextMenuOptionProps, ContextMenuProps, ContextMenuTriggerArea, ContextMenuTriggerAreaProps, XYPosition, createBridge, useContextMenu$1 as useContextMenu, useContextMenu as useContextMenuDetails };

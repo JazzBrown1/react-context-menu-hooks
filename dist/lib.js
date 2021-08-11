@@ -1,7 +1,34 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { useState, useEffect, createContext, useContext, useRef, useLayoutEffect } from 'react';
 
-const useContextMenu = (bridge) => {
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+const useContextMenu$1 = (bridge) => {
     const [state, setState] = useState({
         data: bridge.defaultData,
         clickPosition: { x: 0, y: 0 },
@@ -86,7 +113,8 @@ const CMContext = createContext({
     bridge: new ContextMenuBridge({}),
     dark: false,
 });
-const ContextMenuOption = ({ children, href, onClick, select, disabled, }) => {
+const ContextMenuOption = (props) => {
+    const { children, onClick, select, disabled, href, className } = props, other = __rest(props, ["children", "onClick", "select", "disabled", "href", "className"]);
     const { doClose, doSelect } = useContext(CMContext);
     const handleClick = (e) => {
         e.preventDefault();
@@ -101,7 +129,7 @@ const ContextMenuOption = ({ children, href, onClick, select, disabled, }) => {
             doClose(e);
         }
     };
-    return (jsx("a", { onClick: handleClick, onContextMenu: handleClick, href: href || '#', className: `react-context-menu-option ${disabled ? 'disabled' : 'active'}`, "aria-label": "link", children: children }, void 0));
+    return (jsx("a", Object.assign({}, other, { onClick: handleClick, onContextMenu: handleClick, href: href || '#', className: `react-context-menu-option ${className || ''} ${disabled ? 'disabled' : 'active'}`, "aria-label": "link", children: children }), void 0));
 };
 ContextMenuOption.defaultProps = {
     href: undefined,
@@ -113,7 +141,8 @@ ContextMenuOption.defaultProps = {
 const ContextMenuDivider = () => (jsx("div", { className: "react-context-menu-divider" }, void 0));
 
 // eslint-disable-next-line react/require-default-props
-const ContextMenuExpand = ({ children, style = {}, onSelect, text, }) => {
+const ContextMenuExpand = (props) => {
+    const { children, style = {}, onSelect, text, className } = props, other = __rest(props, ["children", "style", "onSelect", "text", "className"]);
     const { bridge, dark, doSelect } = useContext(CMContext);
     const optionRef = useRef(null);
     const menuRef = useRef(null);
@@ -149,7 +178,7 @@ const ContextMenuExpand = ({ children, style = {}, onSelect, text, }) => {
             dark,
         } }, { children: jsxs("div", Object.assign({ onMouseEnter: () => { setExpanded(true); }, onMouseLeave: () => { setExpanded(false); }, className: "react-context-menu-option active expand-option", ref: optionRef, style: { position: 'relative' } }, { children: [text, jsx("span", Object.assign({ style: {
                         position: 'absolute', right: '0.5rem', top: '0.4rem', fontSize: '0.5rem',
-                    } }, { children: "\u25B6" }), void 0), jsx("div", Object.assign({ className: `react-context-menu expand-menu${dark ? ' theme-dark' : 'theme-light'}`, ref: menuRef, style: styles }, { children: children }), void 0)] }), void 0) }), void 0));
+                    } }, { children: "\u25B6" }), void 0), jsx("div", Object.assign({}, other, { className: `react-context-menu expand-menu ${className || ''} ${dark ? 'theme-dark' : 'theme-light'}`, ref: menuRef, style: styles }, { children: children }), void 0)] }), void 0) }), void 0));
 };
 ContextMenuExpand.defaultProps = {
     style: {},
@@ -169,9 +198,10 @@ const getXDirection = (menuRect, clickPosition) => {
     return 'left';
 };
 // eslint-disable-next-line react/require-default-props
-function ContextMenu({ children, style = {}, bridge, dark = false, onSelect, }) {
+function ContextMenu(props) {
+    const { children, style, bridge, dark = false, onSelect, className } = props, other = __rest(props, ["children", "style", "bridge", "dark", "onSelect", "className"]);
     const menuRef = useRef(null);
-    const { clickPosition, open } = useContextMenu(bridge);
+    const { clickPosition, open } = useContextMenu$1(bridge);
     const anchorRef = useRef(null);
     const [relativePosition, setRelativePosition] = useState({ x: 0, y: 0 });
     // eslint-disable-next-line consistent-return
@@ -228,7 +258,7 @@ function ContextMenu({ children, style = {}, bridge, dark = false, onSelect, }) 
             doSelect,
             bridge,
             dark,
-        } }, { children: jsx("div", Object.assign({ className: "react-context-menu-anchor", ref: anchorRef }, { children: jsx("div", { className: `react-context-menu${dark ? ' theme-dark' : ''}`, style: styles, ref: menuRef, children: children, onContextMenu: (e) => { e.preventDefault(); } }, void 0) }), void 0) }), void 0));
+        } }, { children: jsx("div", Object.assign({ className: "react-context-menu-anchor", ref: anchorRef }, { children: jsx("div", Object.assign({}, other, { className: `react-context-menu ${className || ''} ${dark ? ' theme-dark' : ''}`, style: styles, ref: menuRef, onContextMenu: (e) => { e.preventDefault(); }, children: children }), void 0) }), void 0) }), void 0));
 }
 ContextMenu.defaultProps = {
     style: {},
@@ -239,33 +269,6 @@ ContextMenu.Option = ContextMenuOption;
 ContextMenu.Divider = ContextMenuDivider;
 ContextMenu.Expand = ContextMenuExpand;
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
 const ContextMenuTriggerArea = (props) => {
     const { children, data, bridge } = props, other = __rest(props, ["children", "data", "bridge"]);
     return (jsx("div", Object.assign({}, other, { onContextMenu: (e) => {
@@ -275,5 +278,20 @@ const ContextMenuTriggerArea = (props) => {
         }, children: children }), void 0));
 };
 
+const useContextMenu = (bridge) => {
+    const [state, setState] = useState(bridge.defaultData);
+    useEffect(() => {
+        // eslint-disable-next-line no-param-reassign
+        const listener = (event, data) => {
+            setState(data);
+        };
+        bridge.addListener(listener);
+        return () => {
+            bridge.removeListener(listener);
+        };
+    }, [bridge]);
+    return state;
+};
+
 export default ContextMenu;
-export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu };
+export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu, useContextMenu$1 as useContextMenuDetails };

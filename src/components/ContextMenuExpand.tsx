@@ -1,22 +1,24 @@
-/* eslint-disable react/no-children-prop */
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, {
   useState, useRef, useLayoutEffect, useContext,
 } from 'react';
 import { CMMouseEvent } from '../ContextMenuBridge';
 import { CMContext } from './ContextMenuOption';
-import { ChildrenProp, XYPosition } from './ContextMenu';
+import { XYPosition } from './ContextMenu';
 
-export interface ContextMenuExpandProps {
-  children: ChildrenProp,
+export interface ContextMenuExpandProps extends Omit<React.DetailedHTMLProps<
+React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onSelect'> {
   style?: React.CSSProperties,
   onSelect?: (action: string, event: CMMouseEvent) => void ;
   text: string
 }
 
 // eslint-disable-next-line react/require-default-props
-const ContextMenuExpand = ({
-  children, style = {}, onSelect, text,
-}: ContextMenuExpandProps): JSX.Element => {
+const ContextMenuExpand = (props: ContextMenuExpandProps): JSX.Element => {
+  const {
+    children, style = {}, onSelect, text, className, ...other
+  } = props;
   const { bridge, dark, doSelect } = useContext(CMContext);
   const optionRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -73,7 +75,8 @@ const ContextMenuExpand = ({
           ▶
         </span>
         <div
-          className={`react-context-menu expand-menu${dark ? ' theme-dark' : 'theme-light'}`}
+          {...other}
+          className={`react-context-menu expand-menu ${className || ''} ${dark ? 'theme-dark' : 'theme-light'}`}
           ref={menuRef}
           style={styles}
         >
