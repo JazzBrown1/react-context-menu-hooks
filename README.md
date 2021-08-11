@@ -93,8 +93,7 @@ import { ContextMenu, useContextMenu } from 'react-context-menu-hooks';
 import { myContextMenuBridge } from './myContextMenuBridge';
 
 function MyContextMenu() {
-  const { data } = useContextMenu(myContextMenuBridge);
-  const { changeColor, color } = data;
+  const { changeColor, color } = useContextMenu(myContextMenuBridge);
 
   const handleColorSelect = (action) => { changeColor(action); };
 
