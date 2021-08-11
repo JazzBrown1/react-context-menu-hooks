@@ -28,18 +28,16 @@ function __rest(s, e) {
     return t;
 }
 
-const useContextMenu$1 = (bridge) => {
+const useContextMenuDetails = (bridge) => {
     const [state, setState] = useState({
         data: bridge.defaultData,
         clickPosition: { x: 0, y: 0 },
         open: false,
     });
     useEffect(() => {
-        // eslint-disable-next-line no-param-reassign
         const listener = (event, data, open) => {
             const clickPosition = { x: event.pageX, y: event.pageY };
             setState({ data, clickPosition, open });
-            // console.log('hook-listener', { open, event, data });
         };
         bridge.addListener(listener);
         return () => {
@@ -201,7 +199,7 @@ const getXDirection = (menuRect, clickPosition) => {
 function ContextMenu(props) {
     const { children, style, bridge, dark = false, onSelect, className } = props, other = __rest(props, ["children", "style", "bridge", "dark", "onSelect", "className"]);
     const menuRef = useRef(null);
-    const { clickPosition, open } = useContextMenu$1(bridge);
+    const { clickPosition, open } = useContextMenuDetails(bridge);
     const anchorRef = useRef(null);
     const [relativePosition, setRelativePosition] = useState({ x: 0, y: 0 });
     // eslint-disable-next-line consistent-return
@@ -281,7 +279,6 @@ const ContextMenuTriggerArea = (props) => {
 const useContextMenu = (bridge) => {
     const [state, setState] = useState(bridge.defaultData);
     useEffect(() => {
-        // eslint-disable-next-line no-param-reassign
         const listener = (event, data) => {
             setState(data);
         };
@@ -294,4 +291,4 @@ const useContextMenu = (bridge) => {
 };
 
 export default ContextMenu;
-export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu, useContextMenu$1 as useContextMenuDetails };
+export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu, useContextMenuDetails };

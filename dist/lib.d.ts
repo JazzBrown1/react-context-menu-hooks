@@ -72,13 +72,13 @@ interface ContextMenuTriggerAreaProps<T extends unknown> extends React.DetailedH
 }
 declare const ContextMenuTriggerArea: <T extends unknown>(props: ContextMenuTriggerAreaProps<T>) => JSX.Element;
 
-declare const useContextMenu$1: <Type>(bridge: ContextMenuBridge<Type>) => Type;
+declare const useContextMenu: <Type>(bridge: ContextMenuBridge<Type>) => Type;
 
-declare const useContextMenu: <Type>(bridge: ContextMenuBridge<Type>) => {
+declare const useContextMenuDetails: <Type>(bridge: ContextMenuBridge<Type>) => {
     clickPosition: XYPosition;
     data: Type;
     open: boolean;
 };
 
 export default ContextMenu;
-export { ContextMenu, ContextMenuBridge, ContextMenuExpandProps, ContextMenuOptionProps, ContextMenuProps, ContextMenuTriggerArea, ContextMenuTriggerAreaProps, XYPosition, createBridge, useContextMenu$1 as useContextMenu, useContextMenu as useContextMenuDetails };
+export { ContextMenu, ContextMenuBridge, ContextMenuExpandProps, ContextMenuOptionProps, ContextMenuProps, ContextMenuTriggerArea, ContextMenuTriggerAreaProps, XYPosition, createBridge, useContextMenu, useContextMenuDetails };
