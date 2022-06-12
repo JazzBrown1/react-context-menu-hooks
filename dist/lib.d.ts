@@ -80,5 +80,4 @@ declare const useContextMenuDetails: <Type>(bridge: ContextMenuBridge<Type>) => 
     open: boolean;
 };
 
-export default ContextMenu;
 export { ContextMenu, ContextMenuBridge, ContextMenuExpandProps, ContextMenuOptionProps, ContextMenuProps, ContextMenuTriggerArea, ContextMenuTriggerAreaProps, XYPosition, createBridge, useContextMenu, useContextMenuDetails };

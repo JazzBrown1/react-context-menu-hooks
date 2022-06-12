@@ -3,6 +3,7 @@
   "types": "./dist/lib.d.ts",
   "name": "react-context-menu-hooks",
   "version": "0.3.0",
+  "license": "MIT",
   "author": "Jazz Brown",
   "repository": {
     "type": "git",

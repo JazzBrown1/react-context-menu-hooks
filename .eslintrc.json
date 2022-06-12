@@ -10,6 +10,7 @@
     }
   }
 },
+"ignorePatterns":["dist", "example"],
   "extends": [
       "plugin:react/recommended",
       "airbnb",

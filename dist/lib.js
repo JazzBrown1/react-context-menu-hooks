@@ -1,5 +1,9 @@
-import { jsx, jsxs } from 'react/jsx-runtime';
-import { useState, useEffect, createContext, useContext, useRef, useLayoutEffect } from 'react';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var jsxRuntime = require('react/jsx-runtime');
+var react = require('react');
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -29,12 +33,12 @@ function __rest(s, e) {
 }
 
 const useContextMenuDetails = (bridge) => {
-    const [state, setState] = useState({
+    const [state, setState] = react.useState({
         data: bridge.defaultData,
         clickPosition: { x: 0, y: 0 },
         open: false,
     });
-    useEffect(() => {
+    react.useEffect(() => {
         const listener = (event, data, open) => {
             const clickPosition = { x: event.pageX, y: event.pageY };
             setState({ data, clickPosition, open });
@@ -101,7 +105,7 @@ class ContextMenuBridge {
 }
 const createBridge = (data) => (new ContextMenuBridge(data));
 
-const CMContext = createContext({
+const CMContext = react.createContext({
     doClose: () => {
         // do something
     },
@@ -113,7 +117,7 @@ const CMContext = createContext({
 });
 const ContextMenuOption = (props) => {
     const { children, onClick, select, disabled, href, className } = props, other = __rest(props, ["children", "onClick", "select", "disabled", "href", "className"]);
-    const { doClose, doSelect } = useContext(CMContext);
+    const { doClose, doSelect } = react.useContext(CMContext);
     const handleClick = (e) => {
         e.preventDefault();
         if (disabled)
@@ -127,7 +131,7 @@ const ContextMenuOption = (props) => {
             doClose(e);
         }
     };
-    return (jsx("a", Object.assign({}, other, { onClick: handleClick, onContextMenu: handleClick, href: href || '#', className: `react-context-menu-option ${className || ''} ${disabled ? 'disabled' : 'active'}`, "aria-label": "link", children: children }), void 0));
+    return (jsxRuntime.jsx("a", Object.assign({}, other, { onClick: handleClick, onContextMenu: handleClick, href: href || '#', className: `react-context-menu-option ${className || ''} ${disabled ? 'disabled' : 'active'}`, "aria-label": "link", children: children }), void 0));
 };
 ContextMenuOption.defaultProps = {
     href: undefined,
@@ -136,17 +140,17 @@ ContextMenuOption.defaultProps = {
     disabled: false,
 };
 
-const ContextMenuDivider = () => (jsx("div", { className: "react-context-menu-divider" }, void 0));
+const ContextMenuDivider = () => (jsxRuntime.jsx("div", { className: "react-context-menu-divider" }, void 0));
 
 // eslint-disable-next-line react/require-default-props
 const ContextMenuExpand = (props) => {
     const { children, style = {}, onSelect, text, className } = props, other = __rest(props, ["children", "style", "onSelect", "text", "className"]);
-    const { bridge, dark, doSelect } = useContext(CMContext);
-    const optionRef = useRef(null);
-    const menuRef = useRef(null);
-    const [relativePosition, setRelativePosition] = useState({ x: 0, y: 0 });
-    const [expanded, setExpanded] = useState(false);
-    useLayoutEffect(() => {
+    const { bridge, dark, doSelect } = react.useContext(CMContext);
+    const optionRef = react.useRef(null);
+    const menuRef = react.useRef(null);
+    const [relativePosition, setRelativePosition] = react.useState({ x: 0, y: 0 });
+    const [expanded, setExpanded] = react.useState(false);
+    react.useLayoutEffect(() => {
         if (!expanded || !optionRef.current || !menuRef.current)
             return;
         const optionRect = optionRef.current.getBoundingClientRect();
@@ -162,7 +166,7 @@ const ContextMenuExpand = (props) => {
         setRelativePosition({ x, y });
     }, [expanded]);
     const styles = Object.assign(Object.assign({}, style), { display: expanded ? 'block' : 'none', top: relativePosition.y, left: relativePosition.x });
-    return (jsx(CMContext.Provider, Object.assign({ value: {
+    return (jsxRuntime.jsx(CMContext.Provider, Object.assign({ value: {
             doClose: (e) => {
                 bridge.forceClose(e);
             },
@@ -174,9 +178,9 @@ const ContextMenuExpand = (props) => {
             },
             bridge,
             dark,
-        } }, { children: jsxs("div", Object.assign({ onMouseEnter: () => { setExpanded(true); }, onMouseLeave: () => { setExpanded(false); }, className: "react-context-menu-option active expand-option", ref: optionRef, style: { position: 'relative' } }, { children: [text, jsx("span", Object.assign({ style: {
+        } }, { children: jsxRuntime.jsxs("div", Object.assign({ onMouseEnter: () => { setExpanded(true); }, onMouseLeave: () => { setExpanded(false); }, className: "react-context-menu-option active expand-option", ref: optionRef, style: { position: 'relative' } }, { children: [text, jsxRuntime.jsx("span", Object.assign({ style: {
                         position: 'absolute', right: '0.5rem', top: '0.4rem', fontSize: '0.5rem',
-                    } }, { children: "\u25B6" }), void 0), jsx("div", Object.assign({}, other, { className: `react-context-menu expand-menu ${className || ''} ${dark ? 'theme-dark' : 'theme-light'}`, ref: menuRef, style: styles }, { children: children }), void 0)] }), void 0) }), void 0));
+                    } }, { children: "\u25B6" }), void 0), jsxRuntime.jsx("div", Object.assign({}, other, { className: `react-context-menu expand-menu ${className || ''} ${dark ? 'theme-dark' : 'theme-light'}`, ref: menuRef, style: styles }, { children: children }), void 0)] }), void 0) }), void 0));
 };
 ContextMenuExpand.defaultProps = {
     style: {},
@@ -198,12 +202,12 @@ const getXDirection = (menuRect, clickPosition) => {
 // eslint-disable-next-line react/require-default-props
 function ContextMenu(props) {
     const { children, style, bridge, dark = false, onSelect, className } = props, other = __rest(props, ["children", "style", "bridge", "dark", "onSelect", "className"]);
-    const menuRef = useRef(null);
+    const menuRef = react.useRef(null);
     const { clickPosition, open } = useContextMenuDetails(bridge);
-    const anchorRef = useRef(null);
-    const [relativePosition, setRelativePosition] = useState({ x: 0, y: 0 });
+    const anchorRef = react.useRef(null);
+    const [relativePosition, setRelativePosition] = react.useState({ x: 0, y: 0 });
     // eslint-disable-next-line consistent-return
-    useEffect(() => {
+    react.useEffect(() => {
         if (open) {
             const handleOutsideClick = (e) => {
                 if (open
@@ -218,7 +222,7 @@ function ContextMenu(props) {
             };
         }
     }, [open]);
-    useLayoutEffect(() => {
+    react.useLayoutEffect(() => {
         if (!open)
             return;
         if (!anchorRef.current || !menuRef.current)
@@ -251,12 +255,12 @@ function ContextMenu(props) {
     const doClose = (e) => {
         bridge.forceClose(e);
     };
-    return (jsx(CMContext.Provider, Object.assign({ value: {
+    return (jsxRuntime.jsx(CMContext.Provider, Object.assign({ value: {
             doClose,
             doSelect,
             bridge,
             dark,
-        } }, { children: jsx("div", Object.assign({ className: "react-context-menu-anchor", ref: anchorRef }, { children: jsx("div", Object.assign({}, other, { className: `react-context-menu ${className || ''} ${dark ? ' theme-dark' : ''}`, style: styles, ref: menuRef, onContextMenu: (e) => { e.preventDefault(); }, children: children }), void 0) }), void 0) }), void 0));
+        } }, { children: jsxRuntime.jsx("div", Object.assign({ className: "react-context-menu-anchor", ref: anchorRef }, { children: jsxRuntime.jsx("div", Object.assign({}, other, { className: `react-context-menu ${className || ''} ${dark ? ' theme-dark' : ''}`, style: styles, ref: menuRef, onContextMenu: (e) => { e.preventDefault(); }, children: children }), void 0) }), void 0) }), void 0));
 }
 ContextMenu.defaultProps = {
     style: {},
@@ -269,7 +273,7 @@ ContextMenu.Expand = ContextMenuExpand;
 
 const ContextMenuTriggerArea = (props) => {
     const { children, data, bridge } = props, other = __rest(props, ["children", "data", "bridge"]);
-    return (jsx("div", Object.assign({}, other, { onContextMenu: (e) => {
+    return (jsxRuntime.jsx("div", Object.assign({}, other, { onContextMenu: (e) => {
             // console.log('trigger', data);
             if (bridge)
                 bridge.handleOpen(e, data);
@@ -277,8 +281,8 @@ const ContextMenuTriggerArea = (props) => {
 };
 
 const useContextMenu = (bridge) => {
-    const [state, setState] = useState(bridge.defaultData);
-    useEffect(() => {
+    const [state, setState] = react.useState(bridge.defaultData);
+    react.useEffect(() => {
         const listener = (event, data) => {
             setState(data);
         };
@@ -290,5 +294,9 @@ const useContextMenu = (bridge) => {
     return state;
 };
 
-export default ContextMenu;
-export { ContextMenu, ContextMenuBridge, ContextMenuTriggerArea, createBridge, useContextMenu, useContextMenuDetails };
+exports.ContextMenu = ContextMenu;
+exports.ContextMenuBridge = ContextMenuBridge;
+exports.ContextMenuTriggerArea = ContextMenuTriggerArea;
+exports.createBridge = createBridge;
+exports.useContextMenu = useContextMenu;
+exports.useContextMenuDetails = useContextMenuDetails;

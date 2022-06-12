@@ -22,5 +22,3 @@ export type {
   ContextMenuProps,
   XYPosition,
 };
-
-export default ContextMenu;

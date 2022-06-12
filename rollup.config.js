@@ -4,7 +4,7 @@ import dts from 'rollup-plugin-dts';
 const ex = [{
   input: './src/lib.ts',
   output: [
-    { file: './dist/lib.js', format: 'esm' },
+    { file: './dist/lib.js', format: 'cjs' },
   ],
   plugins: [
     typescript({ lib: ['es5', 'es6', 'dom'], target: 'es6' }),
